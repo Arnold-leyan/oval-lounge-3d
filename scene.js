@@ -59,8 +59,12 @@ for(const parent of [scene,ceiling]){const bins=new Map();parent.traverse(o=>{if
 const dish=new T.Group();dish.name='今日料理';dish.position.set(-1.45,.755,1.12);scene.add(dish);
 cyl(.29,.022,mat('#f3eee0',.26),0,.014,0,dish);
 const rim=mesh(new T.TorusGeometry(.265,.022,10,64),mat('#faf7ed',.23),0,.03,0,dish);rim.rotation.x=Math.PI/2;
-cyl(.222,.018,mat('#b97c3e',.7),0,.03,0,dish);
-for(let i=0;i<13;i++){const a=i*2.4,r=.045+(i%4)*.043;const food=mesh(new T.SphereGeometry(.045,10,7),mat(i%3?'#d1a05b':'#70864a',.8),Math.cos(a)*r,.065,Math.sin(a)*r,dish);food.scale.set(1.4,.55,.8);food.rotation.y=a;}
+cyl(.222,.018,mat('#b8883d',.7),0,.03,0,dish);
+// Stylised toppings echo the supplied photo without claiming a recipe/name.
+const sauce=mesh(new T.SphereGeometry(.17,24,12),mat('#747b37',.92),-.02,.055,.045,dish);sauce.scale.set(1,.18,.75);
+for(let i=0;i<18;i++){const a=i*1.71;const strip=box(.012,.01,.16,mat(i%2?'#91a65c':'#e9953c',.8),Math.cos(a)*.105,.068+(i%3)*.008,-.065+Math.sin(a)*.065,dish);strip.rotation.y=i%2?.8:-.55;}
+for(let x of [-.08,.08]){const egg=mesh(new T.SphereGeometry(.058,16,10),mat('#273f37',.45),x,.068,-.14,dish);egg.scale.set(1,.6,1.35);const yolk=mesh(new T.SphereGeometry(.032,12,8),mat('#8f6e31',.5),x,.099,-.14,dish);yolk.scale.y=.3;}
+const chili=mesh(new T.SphereGeometry(.035,12,8),mat('#c9422f',.65),.03,.105,-.015,dish);chili.scale.set(.45,.35,1.6);chili.rotation.y=.45;
 const dishAnchor=new T.Vector3(-1.45,1.02,1.12);
 function canStand(x,z){if(Math.abs(x)>3.5||z< -4.5||z>5.7)return false;return !blockers.some(b=>Math.abs(x-b.x)<b.w/2+.18&&Math.abs(z-b.z)<b.d/2+.18);}
 function setEvening(on){sun.intensity=on?.18:3.2;hemi.intensity=on?.65:2;lamps.forEach(l=>l.intensity=on?28:10);scene.background.set(on?'#88959d':'#cbd7d8');emit.emissiveIntensity=on?5:3;}

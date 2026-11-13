@@ -23,4 +23,6 @@ Serve this directory over HTTP, e.g. `python3 -m http.server 8000`, then open `h
 
 ## Source and licensing
 
-Generated implementation and procedural assets: MIT, see LICENSE. Vendored Three.js **0.170.0**, including OrbitControls, Reflector, RoomEnvironment and upstream MIT license in `vendor/LICENSE-three.txt`. No CDN connection is needed at runtime.
+Generated implementation and procedural assets: MIT, see LICENSE. Vendored Three.js **0.170.0**, including OrbitControls, Reflector, RoomEnvironment and upstream MIT license in `vendor/LICENSE-three.txt`. No CDN connection is needed at runtime. BufferGeometryUtils is also vendored at the same version for static mesh batching.
+
+See [acceptance evidence and screenshots](evidence/ACCEPTANCE.md) for live browser checks and limitations.

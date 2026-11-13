@@ -1,4 +1,5 @@
 import * as T from './vendor/three.module.js';
+import { mergeGeometries } from './vendor/BufferGeometryUtils.js';
 import { Reflector } from './vendor/Reflector.js';
 export function createRoom({textures=true,reflection=true}={}){
 const scene=new T.Scene();scene.background=new T.Color('#cbd7d8');const ceiling=new T.Group();scene.add(ceiling);const blockers=[];const lamps=[];let mirror;
@@ -51,6 +52,9 @@ for(let z of [-3.8,1.15]){cyl(.28,.45,mat('#b2b0a2'),-3.2,.225,z);block(-3.2,z,.
 if(textures){const c=document.createElement('canvas');c.width=c.height=128;const ctx=c.getContext('2d');const grad=ctx.createRadialGradient(64,64,8,64,64,64);grad.addColorStop(0,'rgba(15,20,15,.36)');grad.addColorStop(.5,'rgba(15,20,15,.18)');grad.addColorStop(1,'rgba(15,20,15,0)');ctx.fillStyle=grad;ctx.fillRect(0,0,128,128);const shadowMat=new T.MeshBasicMaterial({map:new T.CanvasTexture(c),transparent:true,depthWrite:false});for(const b of blockers.filter(b=>b.w<3.3&&b.d<2)){let o=mesh(new T.PlaneGeometry(b.w+.7,b.d+.65),shadowMat,b.x,.012,b.z);o.rotation.x=-Math.PI/2;o.castShadow=false;}}
 const hemi=new T.HemisphereLight('#e9f2f3','#85765b',2);scene.add(hemi);const sun=new T.DirectionalLight('#fff0d1',3.2);sun.position.set(7,6,-7);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-9,right:9,top:9,bottom:-9,near:.1,far:30});sun.shadow.bias=-.0004;sun.shadow.normalBias=.025;scene.add(sun);
 for(let z of [-3,0,3]){const l=new T.PointLight('#ffd4a0',10,8,2);l.position.set(-.5,3.05,z);scene.add(l);lamps.push(l);}
+// Batch static meshes by material and shadow behaviour; retain ceiling visibility and live mirror.
+scene.updateMatrixWorld(true);
+for(const parent of [scene,ceiling]){const bins=new Map();parent.traverse(o=>{if(!o.isMesh||o.isInstancedMesh||o.isReflector||(parent===scene&&o.parent===ceiling))return;if(parent===scene){let p=o.parent;while(p){if(p===ceiling)return;p=p.parent;}}const m=o.material;if(Array.isArray(m))return;const key=[m.type,m.color?.getHex(),m.roughness,m.metalness,m.map?.uuid,m.transparent,m.opacity,m.side,m.emissive?.getHex(),o.castShadow,o.receiveShadow].join('/');if(!bins.has(key))bins.set(key,{m,objects:[]});bins.get(key).objects.push(o);});for(const {m,objects} of bins.values()){if(objects.length<2)continue;const geos=objects.map(o=>{let g=o.geometry.index?o.geometry.toNonIndexed():o.geometry.clone();g.applyMatrix4(o.matrixWorld);return g;});const combined=mergeGeometries(geos,false);if(!combined){geos.forEach(g=>g.dispose());continue;}const merged=new T.Mesh(combined,m);merged.castShadow=objects[0].castShadow;merged.receiveShadow=objects[0].receiveShadow;parent.add(merged);objects.forEach(o=>o.removeFromParent());geos.forEach(g=>g.dispose());}}
 function canStand(x,z){if(Math.abs(x)>3.5||z< -4.5||z>5.7)return false;return !blockers.some(b=>Math.abs(x-b.x)<b.w/2+.18&&Math.abs(z-b.z)<b.d/2+.18);}
 function setEvening(on){sun.intensity=on?.18:3.2;hemi.intensity=on?.65:2;lamps.forEach(l=>l.intensity=on?28:10);scene.background.set(on?'#88959d':'#cbd7d8');emit.emissiveIntensity=on?5:3;}
 return{scene,ceiling,mirror,blockers,canStand,setEvening,sun,lamps};}

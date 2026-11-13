@@ -11,9 +11,10 @@ The scene preserves the reference's grey tiled floor, grey panel wall and displa
 - **Overview**: a roof-off architectural view; press again to restore the previous viewpoint.
 - **Evening / Daylight**: switch lighting.
 - **01–03**: jump between arrival, islands and window views.
+- **今日料理**: click/tap the label or plate on the arrival-side silver round table to open the supplied dish photograph. Close with ✕, Escape or the backdrop; keyboard focus returns to the opener.
 - **Reset**: return to the initial orbit view. **ⓘ**: interpretation notes.
 
-Touch controls and compact layout support mobile. WebGL and JavaScript are required. Reflection resolution is fixed at 1024; device pixel ratio capped at 1.75 for performance. No motion autoplay, analytics, remote fonts, photo, people, private text, or external runtime assets.
+Touch controls and compact layout support mobile. WebGL and JavaScript are required. Reflection resolution is fixed at 1024; device pixel ratio capped at 1.75 for performance. No motion autoplay, analytics, remote fonts, people, private text, or external runtime assets. The original interior photograph is not published. The explicitly authorized dish photo is included at `assets/dish.jpg`, resized and re-encoded without EXIF metadata.
 
 ## Run and check
 
@@ -23,6 +24,6 @@ Serve this directory over HTTP, e.g. `python3 -m http.server 8000`, then open `h
 
 ## Source and licensing
 
-Generated implementation and procedural assets: MIT, see LICENSE. Vendored Three.js **0.170.0**, including OrbitControls, Reflector, RoomEnvironment and upstream MIT license in `vendor/LICENSE-three.txt`. No CDN connection is needed at runtime. BufferGeometryUtils is also vendored at the same version for static mesh batching.
+Generated implementation and procedural assets: MIT, see LICENSE. The user-supplied dish photograph is published with explicit permission for this site; it is excluded from the MIT license and does not grant third-party reuse rights. Vendored Three.js **0.170.0**, including OrbitControls, Reflector, RoomEnvironment and upstream MIT license in `vendor/LICENSE-three.txt`. No CDN connection is needed at runtime. BufferGeometryUtils is also vendored at the same version for static mesh batching.
 
 See [acceptance evidence and screenshots](evidence/ACCEPTANCE.md) for live browser checks and limitations.

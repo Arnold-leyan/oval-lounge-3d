@@ -1,0 +1,116 @@
+{
+  "dish": {
+    "desktop": {
+      "hotspot": true,
+      "raycast": true,
+      "close": true,
+      "escape": true,
+      "backdrop": true,
+      "focusRestored": true,
+      "dragSuppressed": true,
+      "image": {
+        "width": 1200,
+        "height": 1600,
+        "src": "https://arnold-leyan.github.io/oval-lounge-3d/assets/dish.jpg"
+      },
+      "errors": []
+    },
+    "mobile": {
+      "hotspot": true,
+      "raycast": true,
+      "close": true,
+      "escape": true,
+      "backdrop": true,
+      "focusRestored": true,
+      "dragSuppressed": true,
+      "image": {
+        "width": 1200,
+        "height": 1600,
+        "src": "https://arnold-leyan.github.io/oval-lounge-3d/assets/dish.jpg"
+      },
+      "errors": []
+    }
+  },
+  "regression": {
+    "desktop": {
+      "initial": {
+        "mode": "orbit",
+        "overview": false,
+        "evening": false,
+        "position": [
+          2.3,
+          1.85,
+          4.5
+        ],
+        "ceiling": true,
+        "drawCalls": 85,
+        "triangles": 82691
+      },
+      "moveDistance": 2.1906000000000017,
+      "dragLook": true,
+      "controls": {
+        "roofOff": true,
+        "restored": true,
+        "wallBlocked": true,
+        "evening": true,
+        "daylight": true,
+        "reset": {
+          "mode": "orbit",
+          "overview": false,
+          "evening": false,
+          "position": [
+            2.3,
+            1.85,
+            4.5
+          ],
+          "ceiling": true,
+          "drawCalls": 77,
+          "triangles": 70211
+        },
+        "toolbarFits": true,
+        "overflow": false
+      },
+      "errors": []
+    },
+    "mobile": {
+      "initial": {
+        "mode": "orbit",
+        "overview": false,
+        "evening": false,
+        "position": [
+          2.3,
+          1.8500000000000005,
+          4.5
+        ],
+        "ceiling": true,
+        "drawCalls": 64,
+        "triangles": 47747
+      },
+      "moveDistance": 1.9516950329731624,
+      "dragLook": true,
+      "controls": {
+        "roofOff": true,
+        "restored": true,
+        "wallBlocked": true,
+        "evening": true,
+        "daylight": true,
+        "reset": {
+          "mode": "orbit",
+          "overview": false,
+          "evening": false,
+          "position": [
+            2.3,
+            1.8500000000000005,
+            4.5
+          ],
+          "ceiling": true,
+          "drawCalls": 40,
+          "triangles": 49443
+        },
+        "toolbarFits": true,
+        "overflow": false
+      },
+      "errors": []
+    }
+  }
+}

@@ -40,3 +40,16 @@ GitHub Pages reported `built` for scene commit `093c8ae`. HTTP 200 and byte-for-
 ## Limits
 
 Single-photo concept only: proportions and unseen details are inferred; not suitable for measurement, construction or fabrication. The courtyard is interpretive. This is a procedural architectural visualization, not a photogrammetry mesh. Mobile acceptance uses browser device emulation and touch input, not a physical phone. Other browser engines and constrained physical GPUs have not been tested. There is no real-device integration. Source is an HTTP-served ES-module application, not a single-file offline HTML attachment.
+
+
+## Featured dish update — 2026-11-13
+
+Scene feature commit: `911ea5e`. User explicitly authorized this dish photograph for public display; the interior reference remains unpublished. Arrival-side silver round table now has one stylised plate, toppings inspired by the supplied photo, a discoverable 今日料理 label, and mouse/touch raycasting on the actual plate. Portrait arrival camera centers this table.
+
+Image: `assets/dish.jpg`, 1200 × 1600, orientation normalized, EXIF absent after re-encoding. Public image HTTP 200; downloaded bytes match local asset. Photo is excluded from the project MIT license.
+
+Actual public-site Chromium acceptance (1440 × 900 desktop / 390 × 844 emulated mobile touchscreen): label click/tap and projected 3D plate mouse/touch click both open the photograph; image loads at natural resolution; close button, Escape and backdrop all close; close receives focus and opener regains focus; pointer drag does not trigger modal. No page errors. Screenshots: `dish-desktop.png`, `dish-mobile.png`, `dish-scene-desktop.png`, `dish-scene-mobile.png`. Machine-readable results: `dish-results.json`.
+
+Navigation regression repeated after this change: keyboard/touch walking, drag look, roof-off overview and return, wall collision, evening/daylight, reset, responsive toolbar containment and zero horizontal overflow all passed on desktop and mobile. Syntax checks and structural QA pass: 91 meshes / 103260 stored vertex positions, finite vertices and instance matrices, existing 8 collision checks and both light modes intact.
+
+GitHub Pages reported built for `911ea5e`. Only documentation/evidence is added after this tested feature commit. Mobile is emulated, not physical-device tested. The plate is stylised, not a measured food scan, and no dish name or recipe is asserted.

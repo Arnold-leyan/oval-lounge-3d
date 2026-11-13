@@ -40,8 +40,8 @@ for(let x of [-3.45,3.4])for(let z=-3.6;z<4;z+=2){box(.065,.05,1.35,black,x,3.31
 function bench(x,z,rot,s=1){const group=new T.Group();group.position.set(x,0,z);group.rotation.y=rot;scene.add(group);let shape=new T.Shape();shape.moveTo(-1.22,-.45);shape.bezierCurveTo(-1.8,-.08,-1.55,.75,-.45,.78);shape.bezierCurveTo(.4,.8,1.7,.38,1.45,-.32);shape.bezierCurveTo(1.25,-.9,.55,-.55,.12,-.35);shape.bezierCurveTo(-.55,-.03,-.7,-.8,-1.22,-.45);let geo=new T.ExtrudeGeometry(shape,{depth:.35,bevelEnabled:true,bevelSegments:5,steps:1,bevelSize:.10,bevelThickness:.1,curveSegments:36});geo.rotateX(-Math.PI/2);const seat=mesh(geo,orange,0,.38,0,group);seat.scale.setScalar(s);for(let a of [-.92,.92])for(let b of [-.28,.28])cyl(.045,.32,black,a*s,.16,b*s,group);block(x,z,2.75*s,1.22*s);return group;}
 bench(-.35,2.65,-.22,1);bench(-1.5,-.2,.12,.95);bench(.85,-2.25,.7,.82);bench(-1.55,-3.2,-.65,.65);
 function laptop(x,y,z,rot){const g=new T.Group();g.position.set(x,y,z);g.rotation.y=rot;scene.add(g);box(.47,.021,.32,silver,0,0,0,g);const screen=box(.47,.3,.018,black,0,.155,-.13,g);screen.rotation.x=-.23;const face=box(.425,.255,.004,mat('#283f45',.3,.2),0,.157,-.115,g);face.rotation.x=-.23;for(let i=0;i<3;i++)box(.25-i*.05,.008,.004,mat('#a2c0b2'),-.04,.24-i*.045,-.091,g);box(.15,.002,.09,dark,0,.014,.075,g);}
-function table(x,z){cyl(.5,.055,silver,x,.72,z);cyl(.34,.67,silver,x,.35,z);block(x,z,.9,.9);laptop(x-.08,.76,z,.3);cyl(.065,.14,mat('#d8ccb3'),x+.27,.82,z+.05);}
-table(-1.45,1.12);table(.6,-.55);laptop(-.2,.88,2.7,-.3);laptop(1,.79,-2.15,.7);
+function table(x,z,dishTable=false){cyl(.5,.055,silver,x,.72,z);cyl(.34,.67,silver,x,.35,z);block(x,z,.9,.9);if(!dishTable)laptop(x-.08,.76,z,.3);cyl(.065,.14,mat('#d8ccb3'),x+.27,.82,z+.05);}
+table(-1.45,1.12,true);table(.6,-.55);laptop(-.2,.88,2.7,-.3);laptop(1,.79,-2.15,.7);
 // Right-hand work counter and stools.
 box(.65,.09,4.7,wood,3.22,1.08,.2);block(3.22,.2,.65,4.7);for(let z of [-1.6,1.7]){box(.065,1.05,.065,black,3.2,.52,z);}
 for(let z of [-1.3,.2,1.65]){cyl(.25,.09,black,2.67,.79,z);for(let dx of [-.17,.17])for(let dz of [-.17,.17])box(.033,.76,.033,black,2.67+dx,.38,z+dz);box(.44,.29,.05,dark,2.67,.98,z+.2);block(2.67,z,.5,.5);}laptop(3.2,1.14,-.8,-Math.PI/2);
@@ -55,6 +55,13 @@ for(let z of [-3,0,3]){const l=new T.PointLight('#ffd4a0',10,8,2);l.position.set
 // Batch static meshes by material and shadow behaviour; retain ceiling visibility and live mirror.
 scene.updateMatrixWorld(true);
 for(const parent of [scene,ceiling]){const bins=new Map();parent.traverse(o=>{if(!o.isMesh||o.isInstancedMesh||o.isReflector||(parent===scene&&o.parent===ceiling))return;if(parent===scene){let p=o.parent;while(p){if(p===ceiling)return;p=p.parent;}}const m=o.material;if(Array.isArray(m))return;const key=[m.type,m.color?.getHex(),m.roughness,m.metalness,m.map?.uuid,m.transparent,m.opacity,m.side,m.emissive?.getHex(),o.castShadow,o.receiveShadow].join('/');if(!bins.has(key))bins.set(key,{m,objects:[]});bins.get(key).objects.push(o);});for(const {m,objects} of bins.values()){if(objects.length<2)continue;const geos=objects.map(o=>{let g=o.geometry.index?o.geometry.toNonIndexed():o.geometry.clone();g.applyMatrix4(o.matrixWorld);return g;});const combined=mergeGeometries(geos,false);if(!combined){geos.forEach(g=>g.dispose());continue;}const merged=new T.Mesh(combined,m);merged.castShadow=objects[0].castShadow;merged.receiveShadow=objects[0].receiveShadow;parent.add(merged);objects.forEach(o=>o.removeFromParent());geos.forEach(g=>g.dispose());}}
+// A single featured dish on the arrival-side silver table. Kept unbatched for raycasting.
+const dish=new T.Group();dish.name='今日料理';dish.position.set(-1.45,.755,1.12);scene.add(dish);
+cyl(.29,.022,mat('#f3eee0',.26),0,.014,0,dish);
+const rim=mesh(new T.TorusGeometry(.265,.022,10,64),mat('#faf7ed',.23),0,.03,0,dish);rim.rotation.x=Math.PI/2;
+cyl(.222,.018,mat('#b97c3e',.7),0,.03,0,dish);
+for(let i=0;i<13;i++){const a=i*2.4,r=.045+(i%4)*.043;const food=mesh(new T.SphereGeometry(.045,10,7),mat(i%3?'#d1a05b':'#70864a',.8),Math.cos(a)*r,.065,Math.sin(a)*r,dish);food.scale.set(1.4,.55,.8);food.rotation.y=a;}
+const dishAnchor=new T.Vector3(-1.45,1.02,1.12);
 function canStand(x,z){if(Math.abs(x)>3.5||z< -4.5||z>5.7)return false;return !blockers.some(b=>Math.abs(x-b.x)<b.w/2+.18&&Math.abs(z-b.z)<b.d/2+.18);}
 function setEvening(on){sun.intensity=on?.18:3.2;hemi.intensity=on?.65:2;lamps.forEach(l=>l.intensity=on?28:10);scene.background.set(on?'#88959d':'#cbd7d8');emit.emissiveIntensity=on?5:3;}
-return{scene,ceiling,mirror,blockers,canStand,setEvening,sun,lamps};}
+return{scene,ceiling,mirror,dish,dishAnchor,blockers,canStand,setEvening,sun,lamps};}
